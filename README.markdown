@@ -7,6 +7,7 @@ This Git repository contains a script which can be used to run many JPred predic
 
 * Working JPred REST API on the system
 
+You can get it from the official [JPred website](http://www.compbio.dundee.ac.uk/jpred4/api.shtml)
 
 # HOW TO
 
