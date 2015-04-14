@@ -31,8 +31,7 @@ If you have that set, you can run the following command
 
 # TODO
 
-* Choose which files to download from the command line.
-* Make verbose output make more sense.
+* Make verbose output make more readable.
 
 
 # KNOWN ISSUES
