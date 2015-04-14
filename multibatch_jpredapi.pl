@@ -100,7 +100,7 @@ unless ( -f $jpredapi ) {
 }
 
 if ($email !~ m/^(\S+)@(\S+)\.(\S+)$/) { # A rudimentary email check.
-	&print_usage_and_die("Plese provide a valid email adress. '$email' is not valid.");
+	&print_usage_and_die("Plese provide a valid email address. '$email' is not valid.");
 }
 
 if ($accnum_list_file eq '') {
@@ -181,7 +181,7 @@ my %job_downloaded = map { $_ => 0} @accnums; # assign all jobs the status not d
 print "
 $0 runs with the following parameters:
     file containing accession numbers: $accnum_list_file
-    your email adress: $email
+    your email address: $email
     directory containing the files: $fasta_directory
     directory for downloaded predictions: $download_directory
     verbosity $verbosity
@@ -903,7 +903,7 @@ USAGE:
 perl $0 
     -j  [path to jpredapi]
     -f  [path to file containing accession numbers]
-    -e  [your email adress]
+    -e  [your email address]
     -i  [directory containing fasta files]
     -d  [directory to which results should be downloaded]
     -l  [log file]

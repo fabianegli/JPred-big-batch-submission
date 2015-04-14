@@ -26,7 +26,7 @@ If you run multibatch\_jpredapi.pl with the command line option -h you get a sho
 `perl multibatch_jpredapi.pl -h`
 
 If you have that set, you can run the following command
-`perl multibatch_jpredapi.pl -e [insert your email adress here without the brackets] -f example_accnums.txt -d ./path/to/download_folder -j ./path/to/jpredapi -i ./path/to/fasta_files/ -r jnet:html:tar.gz`
+`perl multibatch_jpredapi.pl -e [insert your email address here without the brackets] -f example_accnums.txt -d ./path/to/download_folder -j ./path/to/jpredapi -i ./path/to/fasta_files/ -r jnet:html:tar.gz`
 
 
 # TODO
