@@ -1,6 +1,6 @@
 # multibatch_jpredapi.pl
 
-This Git repository contains a script which can be used to run many JPred predictions with just one command.
+This Git repository contains a Perl script which can be used to run many JPred predictions with just one command.
 
 
 ## Requirements:
@@ -36,14 +36,13 @@ If you have that set, you can run the following command
 
 # KNOWN ISSUES
 
-* Restart on new day does not work jet.
-* Log file does not support multiple running instances in the same folder.
+* Log file does not support concurrently running instances in the same folder.
 * Log file gets crowded when the script is run many times from the same folder.
 
 
 # Contribute
 
-Any comment and contribution is very welcome and pull requests will be accepted if they contribute to the intended functionality of this repository.
+Any comment and contribution is very welcome and pull requests will be accepted if they contribute to the intended functionality of the repository.
 
 
 # Acknowledgements
