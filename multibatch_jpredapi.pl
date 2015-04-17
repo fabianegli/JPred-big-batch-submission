@@ -72,6 +72,14 @@ foreach my $i (0 .. $#ARGV) {
 	elsif ($ARGV[$i] eq '-s') {
 		$logged_job_states = $ARGV[$i+1];
 	}
+	elsif ($ARGV[$i] eq '-c') {
+		if ($ARGV[$i+1] > $checkEvery ) {
+		    $checkEvery = $ARGV[$i+1];
+		}
+		else {
+		    print "Checking job state should not be done more than once per minute. ceckEvery is set to 60s.\n";
+		}
+	}
 	elsif ($ARGV[$i] eq '-m') {
 		$max_jobs_concurrent = $ARGV[$i+1];
 	}
@@ -908,6 +916,7 @@ perl $0
     -d  [directory to which results should be downloaded]
     -l  [log file]
     -s  [log file for script state at end of execution]
+    -c  [equivalent to checkEvery in JPred REST API]
     -m  [maximumal number of concurrent jobs on JPred]
     -r  [':' delimited suffixes for the files that have to be downloaded]
     -v  [verbosity, you can use -vv for more verbose output]
