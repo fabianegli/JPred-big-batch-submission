@@ -40,7 +40,7 @@ my $max_jobs_concurrent = 40; # the limit on JPRED REST API per day; 1000 as of 
 my $accnum_list_file = '';
 my $email = '';
 my $fasta_directory = '';
-my $download_directory = '';
+my $download_directory = 'downloads';
 my $download_results = '';
 my @download_types;
 my $download_file_default = 'tar.gz';
@@ -107,10 +107,6 @@ unless ( -f $jpredapi ) {
 	&print_usage_and_die("The jpredapi provided does not exist: '$jpredapi'.\n");
 }
 
-if ($email !~ m/^(\S+)@(\S+)\.(\S+)$/) { # A rudimentary email check.
-	&print_usage_and_die("Plese provide a valid email address. '$email' is not valid.");
-}
-
 if ($accnum_list_file eq '') {
 	&print_usage_and_die("Please provide a file containing uniprot accession numbers.\n");
 }
@@ -125,11 +121,20 @@ unless ( -d $fasta_directory ) {
 	&print_usage_and_die("The fasta directory '$fasta_directory' could not be found.\n$!");
 }
 
-if ($download_directory eq '') {
-	&print_usage_and_die("Please provide a download directory.\n");
+if ($email !~ m/^(\S+)@(\S+)\.(\S+)$/) { # A rudimentary email check.
+	&print_usage_and_die("Plese provide a valid email address or none. '$email' is not a valid email adress.");
 }
+
 unless ( -d $download_directory ) {
 	mkdir($download_directory) or &print_usage_and_die("Could not create download directory '$download_directory'.\n$!");
+}
+
+if ($logfile eq '') {
+    $logfile = "$accnum_list_file.log";
+}
+
+if ($logged_job_states eq '') {
+    $logged_job_states = "$accnum_list_file.job_states.log";
 }
 
 if ($download_results eq '') {
@@ -145,14 +150,6 @@ else {
             &print_usage_and_die("The file suffix '$download_type_in' is not supported.\n");
         }
     }
-}
-
-if ($logfile eq '') {
-    $logfile = "$accnum_list_file.log";
-}
-
-if ($logged_job_states eq '') {
-    $logged_job_states = "$accnum_list_file.job_states.log";
 }
 
 if (! -f $logfile) {
@@ -909,21 +906,26 @@ sub usage {
 return "
 USAGE:
 perl $0 
-    -j  [path to jpredapi]
-    -f  [path to file containing accession numbers]
-    -e  [your email address]
-    -i  [directory containing fasta files]
-    -d  [directory to which results should be downloaded]
-    -l  [log file]
-    -s  [log file for script state at end of execution]
-    -c  [equivalent to checkEvery in JPred REST API]
-    -m  [maximumal number of concurrent jobs on JPred]
-    -r  [':' delimited suffixes for the files that have to be downloaded]
-    -v  [verbosity, you can use -vv for more verbose output]
-    -h  print a help message
+    Required command line arguments:
+        -j  [path to jpredapi]
+        -f  [path to file containing accession numbers]
+        -i  [directory containing fasta files]
+
+    Optional command line arguments (default values in brackets).
+        -e  [your email address]
+        -d  [directory to which results should be downloaded] (downloads)
+        -l  [log file] (-f input value with suffix '.log')
+        -s  [log file for job states] (-f input value with suffix '.job_states.log')
+        -c  [equivalent to checkEvery in JPred REST API] (60)
+        -m  [maximumal number of concurrent jobs on JPred] (40)
+        -r  [':' delimited suffixes for the files that have to be downloaded] (tar.gz)
+        -v  [verbosity, you can use -vv for more verbose output]
+        -h  print a help message
 
 ";
 }
+
+
 
 
 sub print_usage_and_die {
