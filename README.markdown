@@ -1,4 +1,4 @@
-# multibatch_jpredapi.pl
+# JPred scheduler script
 
 This Git repository contains a Perl script which can be used to run many JPred predictions with just one command.
 
@@ -9,7 +9,7 @@ This Git repository contains a Perl script which can be used to run many JPred p
 
 You can get it from the official [JPred website](http://www.compbio.dundee.ac.uk/jpred4/api.shtml)
 
-# HOW TO
+# How To
 
 First you need a list of UniProt accession numbers in a file. One per line. Example (./example_accnums.txt):
 
@@ -29,12 +29,12 @@ If you have that set, you can run the following command
 `perl multibatch_jpredapi.pl -e [insert your email address here without the brackets] -f example_accnums.txt -d ./path/to/download_folder -j ./path/to/jpredapi -i ./path/to/fasta_files/ -r jnet:html:tar.gz`
 
 
-# TODO
+# ToDo
 
-* Make verbose output make more readable.
+* Make verbose output more readable.
 
 
-# KNOWN ISSUES
+# Known Issues
 
 * Log file does not support concurrently running instances in the same folder.
 * Log file gets crowded when the script is run many times from the same folder.
@@ -47,5 +47,5 @@ Any comment and contribution is very welcome and pull requests will be accepted 
 
 # Acknowledgements
 
-Without Alexey Drozdetskiy who currently maintains and develops JPred, this would not have been done. Thank you for the many emails with valuable information and inputs as well as added features to JPred to make this script more robust.
+Dr. Alexey Drozdetskiy who currently maintains and develops JPred4 at the University of Dundee encouraged me to publish this script. My gratitude goes to him for the many emails with valuable information and inputs as well as added features to JPred4 to make this script more useful and robust.
 
