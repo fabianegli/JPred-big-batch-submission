@@ -241,9 +241,9 @@ while (0 < $number_of_jobs_to_submit) {
 		$remaining_quota_today = &remaining_quota_today();
 	}
 	
-	if ( $remaining_quota_today == 0 and &number_of_jobs_running() == 0 ) {
+	if ( $remaining_quota_today == 0 and &number_of_jobs_to_submit() > 0 ) {
 		my $sec_to_next_day = &time_left_before_job_quota_re_fill();
-		print "waiting $sec_to_next_day for the new day to start.\n";
+		print "Waiting $sec_to_next_day for the new day to start.\n";
 		sleep $sec_to_next_day;
 		$remaining_quota_today = &remaining_quota_today();
 	}
