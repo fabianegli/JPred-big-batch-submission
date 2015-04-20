@@ -358,8 +358,13 @@ sub download_results {
                     $job_status{$accnum} = -1;
                     $job_fail_count{$accnum}++;
                 }
+                elsif ($jpred_log =~ m/(Jpred error:[^\n\r]+)/ ) {
+                    $download_status = 'failed.\n$1\n';
+                    $job_status{$accnum} = -1;
+                    $job_fail_count{$accnum}++;
+                }
                 else {
-                    print "unexpexted log:\n$jpred_log\n";
+                    print "unexpected JPred log:\n$jpred_log\n";
                 }
                 $download_status = 'fialed';
             }
