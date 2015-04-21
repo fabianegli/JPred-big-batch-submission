@@ -40,7 +40,7 @@ If you have that set, you can run the following command
 * Log file gets crowded when the script is run many times from the same folder.
 
 
-# LICENSE
+# License
 
 The original work 'multibatch_jpredapi.pl' and the JPred output is licensed under [GNU General Public License version 3](http://www.gnu.org/licenses/gpl-3.0.html) while the FASTA files are derived from UniProt and are licensed with the [Creative Commons Attribution-NoDerivs](https://creativecommons.org/licenses/by-nd/3.0/) license.
 
