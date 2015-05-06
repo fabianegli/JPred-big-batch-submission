@@ -54,3 +54,4 @@ Any comment and contribution is very welcome and pull requests will be accepted 
 
 Dr. Alexey Drozdetskiy who currently maintains and develops JPred4 at the University of Dundee encouraged me to publish this script. My gratitude goes to him for the many emails with valuable information and inputs as well as added features to JPred4 to make this script more useful and robust.
 
+I was employed by ETH in the group of Prof. Sabine Werner and supervised by Dr. Ulrich auf dem Keller when I wrote this script.
