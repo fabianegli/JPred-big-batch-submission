@@ -52,6 +52,8 @@ my $download_file_default = 'tar.gz';
 my $logfile = '';
 my $logged_job_states = '';
 my $print_usage = 0;
+my $rename = 0;
+my $renamedfolder_name = "renamed_files";
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # parse command line arguments
@@ -97,6 +99,10 @@ foreach my $i (0 .. $#ARGV) {
 	elsif ($ARGV[$i] =~ m/-([v]+)/) {
 		$verbosity = length($1);
 	}
+	elsif ($ARGV[$i] =~ m/-R/) {
+		$rename = 1;
+		$renamedfolder_name = $ARGV[$i+1] unless ($ARGV[$i+1] =~ m/(^-)|(^$)/);
+	}
 }
 
 if ($print_usage) {
@@ -106,32 +112,32 @@ if ($print_usage) {
 
 # check command line argument integrity
 if ( $jpredapi eq '' ) {
-	&print_usage_and_die("Please provide the jpredapi instance you want to use.\n");
+	&print_usage_and_exit("Please provide the jpredapi instance you want to use.\n");
 }
 unless ( -f $jpredapi ) {
-	&print_usage_and_die("The jpredapi provided does not exist: '$jpredapi'.\n");
+	&print_usage_and_exit("The jpredapi provided does not exist: '$jpredapi'.\n");
 }
 
 if ($accnum_list_file eq '') {
-	&print_usage_and_die("Please provide a file containing uniprot accession numbers.\n");
+	&print_usage_and_exit("Please provide a file containing uniprot accession numbers.\n");
 }
 unless ( -f $accnum_list_file ) {
-	&print_usage_and_die("The file containing uniprot accession numbers does not exist: '$accnum_list_file'.\n");
+	&print_usage_and_exit("The file containing uniprot accession numbers does not exist: '$accnum_list_file'.\n");
 }
 
 if ($fasta_directory eq '') {
-	&print_usage_and_die("Please provide a the directory containing the fasta files.\n");
+	&print_usage_and_exit("Please provide a the directory containing the fasta files.\n");
 }
 unless ( -d $fasta_directory ) {
-	&print_usage_and_die("The fasta directory '$fasta_directory' could not be found.\n$!");
+	&print_usage_and_exit("The fasta directory '$fasta_directory' could not be found.\n$!");
 }
 
 if ($email !~ m/^(\S+)@(\S+)\.(\S+)$/) { # A rudimentary email check.
-	&print_usage_and_die("Plese provide a valid email address or none. '$email' is not a valid email adress.");
+	&print_usage_and_exit("Plese provide a valid email address or none. '$email' is not a valid email adress.");
 }
 
 unless ( -d $download_directory ) {
-	mkdir($download_directory) or &print_usage_and_die("Could not create download directory '$download_directory'.\n$!");
+	mkdir($download_directory) or &print_usage_and_exit("Could not create download directory '$download_directory'.\n$!");
 }
 
 if ($logfile eq '') {
@@ -152,13 +158,13 @@ else {
             push( @download_types, $download_type_in);
         }
         else {
-            &print_usage_and_die("The file suffix '$download_type_in' is not supported.\n");
+            &print_usage_and_exit("The file suffix '$download_type_in' is not supported.\n");
         }
     }
 }
 
 if (! -f $logfile) {
-    open my $NL, "> $logfile" or &print_usage_and_die("Could not create log file $logfile.\n");
+    open my $NL, "> $logfile" or &print_usage_and_exit("Could not create log file $logfile.\n");
     close $NL;
 }
 
@@ -208,6 +214,13 @@ elsif ( -f $logfile ) {
 }
 else {
     print "\n -> No log files found, assuming new submission.\n\n";
+}
+
+
+if ($rename) {
+	&copy_files;
+	&print_statistics if $verbosity;
+	exit;
 }
 
 # from here on, we want some better handling of programm interruption for consistent log.
@@ -916,12 +929,15 @@ sub usage {
 return "
 USAGE:
 perl $0 
+	
+	[description] (Default values; given or explained)
+	
     Required command line arguments:
         -j  [path to jpredapi]
         -f  [path to file containing accession numbers]
         -i  [directory containing fasta files]
 
-    Optional command line arguments (default values in brackets).
+    Optional command line arguments:
         -e  [your email address]
         -d  [directory to which results should be downloaded] (downloads)
         -l  [log file] (-f input value with suffix '.log')
@@ -931,6 +947,10 @@ perl $0
         -r  [':' delimited suffixes for the files that have to be downloaded] (tar.gz)
         -v  [verbosity, you can use -vv for more verbose output]
         -h  print a help message
+    
+    EXPERIMENTAL: Running the renaming of downloaded files. Currently only works with jnet
+    	files.
+     	-R	copy and rename the downloaded job files ()
 
 ";
 }
@@ -938,11 +958,33 @@ perl $0
 
 
 
-sub print_usage_and_die {
+sub print_usage_and_exit {
     print "\nERROR: $_[0]\n";
     print &usage();
-    die();
+    exit();
 }
+
+
+
+sub copy_files {
+	#"This sub should take all downloaded .jnet files and copy them into a new folder with their names being the fasta input";
+	
+	print "Copying files ...\n";
+	
+	if (! -d $renamedfolder_name) {
+		mkdir($renamedfolder_name) or die $!;
+	}
+	
+	my @downloaded = grep { $job_downloaded{$_} == 1 } keys %job_downloaded;
+	
+	foreach my $job (@downloaded) {
+		system("cp $download_directory/$job_id{$job}.jnet $renamedfolder_name/$job.jnet");
+	}
+	
+}
+
+
+
 
 
 
